@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟微信拆红包动画</title>
+    <link rel="stylesheet" href="css/index.css">
+    <script src="../js-bag/jquery-1.11.2.min.js"></script>
+    <script src="../js-bag/lib.flexible.js"></script>
+    <script src="../js-bag/fastclick.js"></script>
+</head>
+<body>
+<div class="flex-content">
+    <h3>微信拆红包效果</h3>
+     <div class="box-red-packet">
+        <img class="client-img" src="images/red-packet.png" alt="红包">
+        <a class="my-red-packet" ></a>
+        <span class="num" >5</span>
+        <a class="prize" >兑红包</a>
+    </div>
+    <!-- 遮罩 -->
+    <div class="mask"></div>
+
+    <!-- 红包 -->
+    <div class="flip red-packet-prize">
+        <a class="red-packet-btn" href="javascript:;"><img width='100%' src="images/chai-red-packet.png" alt=""></a>
+    </div>
+    <!-- 拆红包 -->
+    <div class="flip money-prize">
+        <a class="close money-close" href="javascript:;"></a>
+        <span class="money">520</span>
+    </div>
+
+</div>
+<script>
+$(function(){
+
+    // 兑红包
+    $('.prize').on('click',function(){
+        $('.mask').show();
+        $('body').on('touchmove', eventTarget, false);
+        // 勋章不够
+        if ($('.red-packet-btn img').hasClass('clickFlag')) {
+            $('.money-prize').fadeIn(200);
+            return false;
+        }
+        $('.red-packet-prize').show();
+    });
+
+    // 拆红包
+    $('.red-packet-prize').on('click',function(){
+        var reaPacket = $('.red-packet-btn img');
+        if (reaPacket.hasClass('clickFlag')) {
+            return false;
+        }
+        reaPacket.addClass('transform-start');
+        reaPacket.addClass('clickFlag');
+        setTimeout(function () {
+            $('.red-packet-prize').fadeOut(200);
+            $('.money-prize').fadeIn(200);
+            reaPacket.removeClass('transform-start');
+        }, 500);
+    });
+
+    function eventTarget(event) {
+        event.preventDefault();
+    }
+
+    $('.money-prize .close').on('click',function(){
+        $('.money-prize').hide();
+        $('.mask').hide();
+        // 释放滚动
+        $('body').off('touchmove');
+    });
+
+
+
+
+
+
+});
+</script>
+</body>
+</html>
